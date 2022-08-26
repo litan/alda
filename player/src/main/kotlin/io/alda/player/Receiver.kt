@@ -10,6 +10,8 @@ import com.illposed.osc.transport.NetworkProtocol
 import com.illposed.osc.transport.OSCPortIn
 import com.illposed.osc.transport.OSCPortInBuilder
 import mu.KotlinLogging
+import java.net.InetAddress
+import java.net.InetSocketAddress
 
 private val log = KotlinLogging.logger {}
 
@@ -22,9 +24,10 @@ private fun instructions(packet : OSCPacket) : List<OSCMessage> {
 }
 
 fun receiver(port : Int) : OSCPortIn {
+  val loopbackSocketAddress = InetSocketAddress(InetAddress.getByName(null), port)
   return OSCPortInBuilder()
-    .setPort(port)
     .setNetworkProtocol(NetworkProtocol.TCP)
+    .setSocketAddress(loopbackSocketAddress)
     .setPacketListener(object : OSCPacketListener {
     override fun handlePacket(event : OSCPacketEvent) {
       stateManager!!.delayExpiration()

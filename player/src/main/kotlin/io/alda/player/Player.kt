@@ -494,11 +494,17 @@ private fun applyUpdates(updates : Updates) {
   }
 }
 
+private fun oscMessageToString(msg: OSCMessage): String {
+//  return "${msg.address} ${msg.arguments} (${msg.info?.argumentTypeTags})";
+  return """message("${msg.address}" ${msg.arguments.joinToString(", ", ", Seq(", ")")}),""";
+}
+
 fun player() : Thread {
   return thread(start = false) {
     while (!Thread.currentThread().isInterrupted()) {
       try {
         val instructions = playerQueue.take()
+        log.debug { instructions.map { oscMessageToString(it) }.joinToString("\n", "OSC Messages Received:\n") }
         val updates = parseUpdates(instructions)
         applyUpdates(updates)
       } catch (iex : InterruptedException) {

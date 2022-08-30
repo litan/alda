@@ -288,7 +288,7 @@ class MidiEngine {
     sequencer.addMetaEventListener(MetaEventListener { msg ->
       when (val msgType = msg.getType()) {
         CustomMetaMessage.CONTINUE.type -> {
-          log.debug { "Received CONTINUE meta event" }
+          log.trace { "Received CONTINUE meta event" }
           synchronized(isPlaying) {
             if (isPlaying) sequencer.start()
           }

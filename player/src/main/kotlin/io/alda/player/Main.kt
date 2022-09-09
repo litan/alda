@@ -89,7 +89,7 @@ class Run : CliktCommand(
     val player = player()
     log.info { "Starting player..." }
     player.start()
-    println("Music Server Started.")
+    println("Alda (https://alda.io/) Music Server Started.")
 
     Runtime.getRuntime().addShutdownHook(thread(start = false) {
       stateManager!!.stop()

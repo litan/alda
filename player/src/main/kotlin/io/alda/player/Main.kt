@@ -74,10 +74,6 @@ class Run : CliktCommand(
     stateManager = StateManager(port)
     stateManager!!.start()
 
-    log.info { "Starting receiver, listening on port $port..." }
-    val receiver = receiver(port)
-    receiver.startListening()
-
     if (lazyAudio) {
       log.info {
         "Deferring audio initialization; --lazy-audio flag was provided."
@@ -89,6 +85,11 @@ class Run : CliktCommand(
     val player = player()
     log.info { "Starting player..." }
     player.start()
+
+    log.info { "Starting receiver, listening on port $port..." }
+    val receiver = receiver(port)
+    receiver.startListening()
+
     println("Alda (https://alda.io/) Music Server Started.")
 
     Runtime.getRuntime().addShutdownHook(thread(start = false) {
